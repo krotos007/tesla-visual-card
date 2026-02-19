@@ -44,8 +44,16 @@ class TeslaCard extends HTMLElement {
         if (!this._hass || !this.config) return;
 
         // --- ENTITY MAPPING ---
-        const carState = this._hass.states['sensor.dream_charging']?.state?.toLowerCase(); // Charging/Stopped/Disconnected
-        const shiftState = this._hass.states['sensor.dream_shift_state']?.state;
+        // Tenta encontrar o estado em várias variações de nomes comuns na integração Tesla Fleet
+        const carState =
+            this._hass.states['sensor.dream_charging']?.state?.toLowerCase() ||
+            this._hass.states['sensor.dream_state']?.state?.toLowerCase();
+
+        const shiftState =
+            this._hass.states['sensor.dream_shift_state']?.state ||
+            this._hass.states['sensor.dream_shift_state_2']?.state ||
+            this._hass.states['sensor.dream_shift_state_3']?.state ||
+            'P'; // Default to Park
         // Charge cable sensor (often binary_sensor.dream_charger_connected)
         // If unavailable, we infer from carState
         const chargeCable = (carState === 'charging' || carState === 'complete' || carState === 'stopped') ? 'on' : 'off';
