@@ -59,12 +59,19 @@ class TeslaCard extends HTMLElement {
         const chargeCable = (carState === 'charging' || carState === 'complete' || carState === 'stopped') ? 'on' : 'off';
 
         // Doors & Covers (Tesla Fleet uses 'open'/'closed' or 'on'/'off')
-        const frunk = this._hass.states['cover.dream_frunk_2']?.state;
-        const trunk = this._hass.states['cover.dream_trunk_2']?.state; // Tesla Fleet trunk is a cover
-        const frontDriver = this._hass.states['binary_sensor.dream_front_driver_door_2']?.state;
-        const frontPass = this._hass.states['binary_sensor.dream_front_passenger_door_2']?.state;
-        const rearDriver = this._hass.states['binary_sensor.dream_rear_driver_door_2']?.state;
-        const rearPass = this._hass.states['binary_sensor.dream_rear_passenger_door_2']?.state;
+        // Helper function to try variations
+        const getState = (base) => {
+            return this._hass.states[base]?.state ||
+                this._hass.states[`${base}_2`]?.state ||
+                this._hass.states[`${base}_3`]?.state;
+        };
+
+        const frunk = getState('cover.dream_frunk');
+        const trunk = getState('cover.dream_trunk');
+        const frontDriver = getState('binary_sensor.dream_front_driver_door');
+        const frontPass = getState('binary_sensor.dream_front_passenger_door');
+        const rearDriver = getState('binary_sensor.dream_rear_driver_door');
+        const rearPass = getState('binary_sensor.dream_rear_passenger_door');
 
         // Helper booleans
         const isCharging = carState === 'charging';
