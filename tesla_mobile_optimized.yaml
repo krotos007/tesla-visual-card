@@ -1,0 +1,193 @@
+type: vertical-stack
+cards:
+  # ==============================================================================
+  # 1. VISUAL 3D (Mantém-se igual, ajusta-se à largura)
+  # ==============================================================================
+  - type: custom:tesla-doors-visual
+    entity: sensor.dream_battery_level
+    image_path: https://raw.githubusercontent.com/krotos007/tesla-visual-card/master/images/
+    height: 220 # Um pouco mais baixo para poupar ecrã no telemóvel
+
+  # ==============================================================================
+  # 2. ESTATÍSTICAS (Grid 2x2 para ser legível no telemóvel)
+  # ==============================================================================
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: tile
+        entity: sensor.dream_battery_level
+        name: Bateria
+        icon: mdi:battery-high
+        color: green
+      - type: tile
+        entity: sensor.dream_battery_range_2
+        name: Autonomia
+        icon: mdi:map-marker-distance
+        color: blue
+      - type: tile
+        entity: sensor.dream_charger_power_3
+        name: Potência
+        icon: mdi:flash
+        color: yellow
+      - type: button
+        entity: button.dream_wake
+        name: Acordar
+        icon: mdi:refresh
+        tap_action:
+          action: toggle
+
+  # ==============================================================================
+  # 3. CONTROLO RÁPIDO (Grid 2 colunas = Botões Maiores)
+  # ==============================================================================
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: tile
+        entity: sensor.dream_speed_2
+        name: Velocidade
+        icon: mdi:speedometer
+        color: yellow
+      - type: tile
+        entity: lock.dream_lock_2
+        name: Trancar
+        icon: mdi:lock
+        color: red
+        tap_action:
+          action: toggle
+      - type: tile
+        entity: cover.dream_windows_2
+        name: Janelas (Vent)
+        icon: mdi:car-door
+        color: blue
+        features:
+          - type: cover-open-close
+        tap_action:
+          action: toggle
+      - type: tile
+        entity: cover.dream_charge_port_door_2
+        name: Porta Carga
+        icon: mdi:ev-plug-tesla
+        color: blue
+        tap_action:
+          action: toggle
+      - type: tile
+        entity: cover.dream_frunk_2
+        name: Frunk
+        icon: mdi:car-front
+        color: grey
+        tap_action:
+          action: toggle
+      # Espaço vazio ou extra para alinhar grelha (opcional)
+
+  # ==============================================================================
+  # 4. CONTROLO DE CARREGAMENTO (Compacto)
+  # ==============================================================================
+  - type: entities
+    title: Carregamento
+    show_header_toggle: false
+    state_color: true
+    entities:
+      - entity: switch.dream_charge
+        name: Carregar
+        icon: mdi:ev-station
+      - entity: sensor.dream_charging
+        name: Estado
+      - entity: sensor.dream_time_to_full_charge
+        name: Tempo Restante
+      - entity: number.dream_charge_limit_2
+        name: Limite (%)
+      - entity: number.dream_charge_current
+        name: Amperes (A)
+
+  # ==============================================================================
+  # 5. CLIMATIZAÇÃO
+  # ==============================================================================
+  - type: entities
+    title: Conforto
+    show_header_toggle: false
+    entities:
+      - entity: climate.dream_climate_2
+        name: AC
+      - entity: sensor.dream_inside_temperature
+        name: Interior
+      - type: divider
+      - entity: select.dream_steering_wheel_heater
+        name: Volante
+      # Bancos escondidos num fold para poupar espaço?
+      # Se quiseres ver sempre, deixa estar assim:
+      - entity: select.dream_seat_heater_front_left
+        name: Condutor
+      - entity: select.dream_seat_heater_front_right
+        name: Passageiro
+
+  # ==============================================================================
+  # 6. SEGURANÇA & PNEUS
+  # ==============================================================================
+  - type: tile
+    entity: switch.dream_sentry_mode_2
+    name: Sentry Mode
+    icon: mdi:cctv
+    color: red
+    vertical: false # Horizontal poupa altura
+
+  # Pneus (2x2 Grid mantém-se ok no telemóvel)
+  - type: grid
+    columns: 2
+    square: true
+    cards:
+      - type: tile
+        entity: sensor.dream_tire_pressure_front_left
+        name: FE
+        icon: mdi:car-tire-alert
+        color: orange
+      - type: tile
+        entity: sensor.dream_tire_pressure_front_right
+        name: FD
+        icon: mdi:car-tire-alert
+        color: orange
+      - type: tile
+        entity: sensor.dream_tire_pressure_rear_left
+        name: TE
+        icon: mdi:car-tire-alert
+        color: orange
+      - type: tile
+        entity: sensor.dream_tire_pressure_rear_right
+        name: TD
+        icon: mdi:car-tire-alert
+        color: orange
+
+  # ==============================================================================
+  # 7. LOCALIZAÇÃO E EXTRAS
+  # ==============================================================================
+  - type: map
+    entities:
+      - device_tracker.dream_location_2
+    aspect_ratio: 16x9
+    default_zoom: 14
+    dark_mode: true
+
+  - type: grid
+    columns: 4 # Ícones pequenos para extras é ok, ou mudar para 2 se quiseres botões grandes
+    cards:
+      - type: button
+        entity: button.dream_flash_lights
+        icon: mdi:car-light-high
+        tap_action:
+          action: toggle
+      - type: button
+        entity: button.dream_honk_horn
+        icon: mdi:bugle
+        tap_action:
+          action: toggle
+      - type: button
+        entity: button.dream_play_fart
+        icon: mdi:gas-cylinder
+        tap_action:
+          action: toggle
+      - type: button
+        entity: button.dream_homelink_2
+        icon: mdi:garage
+        tap_action:
+          action: toggle
